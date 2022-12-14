@@ -10,18 +10,18 @@ COPY day09_moves (move_direction, move_units)
 FROM '/aoc2022_data/day09.txt'
 WITH (FORMAT text, DELIMITER ' ');
 
-CREATE OR REPLACE FUNCTION is_adjacent(x int[], y int[]) returns boolean
+CREATE OR REPLACE FUNCTION is_adjacent(x INT[], y INT[]) RETURNS BOOLEAN
   LANGUAGE SQL
   IMMUTABLE
   RETURN ABS(x[1] - y[1]) < 2 AND ABS(x[2] - y[2]) < 2
 ;
 
 
-CREATE OR REPLACE FUNCTION move_following(x int[], y int[]) returns int[]
+CREATE OR REPLACE FUNCTION move_following(x INT[], y INT[]) RETURNS INT[]
   LANGUAGE SQL
   IMMUTABLE
   RETURN CASE
-    WHEN is_adjacent(x, y) THEN ARRAY[y[1], y[2]]
+    WHEN is_adjacent(x, y) THEN y
     ELSE ARRAY[
       y[1] + CASE WHEN x[1] < y[1] THEN -1 WHEN x[1] = y[1] THEN 0 ELSE 1 END
     , y[2] + CASE WHEN x[2] < y[2] THEN -1 WHEN x[2] = y[2] THEN 0 ELSE 1 END
