@@ -1,12 +1,18 @@
-WITH items as (
-SELECT DISTINCT id, (id-1) / 3 grp_id, regexp_split_to_table(contents, '') item
-FROM day03_rucksack_contents
+WITH items AS (
+  SELECT DISTINCT
+      id
+    , (id-1) / 3 grp_id
+    , regexp_split_to_table(contents, '') item
+  FROM day03_rucksack_contents
 )
+
 SELECT
-sum(CASE WHEN i1.item = LOWER(i1.item)
-      THEN ascii(i1.item) - ascii('a') + 1
-      ELSE ascii(i1.item) - ascii('A') + 27
-    END)
+    SUM(
+      CASE
+        WHEN i1.item = LOWER(i1.item) THEN ASCII(i1.item) - ASCII('a') + 1
+        ELSE ASCII(i1.item) - ASCII('A') + 27
+      END
+    )
 FROM items i1
 JOIN items i2
   ON i2.id = i1.id + 1
