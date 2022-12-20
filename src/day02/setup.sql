@@ -10,10 +10,10 @@ WITH (FORMAT TEXT, DELIMITER ' ');
 
 DROP TABLE IF EXISTS day02_scoring_rule;
 CREATE TABLE day02_scoring_rule (
-  opponent_move char(1)
-, my_move char(1)
-, opponent_score INT
-, my_score int
+    opponent_move char(1)
+  , my_move char(1)
+  , opponent_score INT
+  , my_score int
 );
 INSERT INTO day02_scoring_rule VALUES
   ('A', 'X', 4, 4) -- draw

@@ -31,7 +31,7 @@ WITH RECURSIVE moves AS (
         WHEN 'D' THEN array[rec.h[1], rec.h[2] - 1]
         WHEN 'U' THEN array[rec.h[1], rec.h[2] + 1]
       END h
-  ) lat1 ON TRUE
+    ) lat1 ON TRUE
 )
 SELECT COUNT(DISTINCT t)
 FROM rec

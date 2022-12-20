@@ -1,12 +1,12 @@
-with ranges as (
-select
-  id
-, ('[' || replace(section1, '-', ',') || ']')::int4range section1
-, ('[' || replace(section2, '-', ',') || ']')::int4range section2
-from day04_assignments
--- where id = 72
+WITH ranges AS (
+  SELECT
+      id
+      , ('[' || REPLACE(section1, '-', ',') || ']')::int4range section1
+      , ('[' || REPLACE(section2, '-', ',') || ']')::int4range section2
+  FROM day04_assignments
 )
-select
-count(*)
-from ranges
-where section1 && section2
+
+SELECT
+    COUNT(*)
+FROM ranges
+WHERE section1 && section2

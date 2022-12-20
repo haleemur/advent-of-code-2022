@@ -1,16 +1,22 @@
-with repeats AS (
-select datum
-, rn
-, string_agg(datum, '') over w preceding_3
-from day06_packet_sequence
-, regexp_split_to_table(datastream, '') with ordinality as d(datum, rn)
-window w as (order by rn rows between 3 preceding and 1 preceding)
+WITH repeats AS (
+    SELECT
+        datum
+      , rn
+      , STRING(datum, '') OVER w preceding_3
+    FROM day06_packet_sequence
+       , REGEXP_SPLIT_TO_TABLE(datastream, '') WITH ordinality AS d(datum, rn)
+    WINDOW w AS (ORDER BY rn ROWS BETWEEN 3 PRECEDING AND 1 PRECEDING)
 )
-select datum, rn, preceding_3, count(distinct p3)
-from repeats
-, regexp_split_to_table(preceding_3, '') p3
-where preceding_3 !~ datum
-group by 1, 2, 3
-having count(distinct p3) = 3
-order by rn
-limit 1
+
+SELECT
+    datum
+  , rn
+  , preceding_3
+  , COUNT(DISTINCT p3)
+FROM repeats
+   , REGEXP_SPLIT_TO_TABLE(preceding_3, '') p3
+WHERE preceding_3 !~ datum
+GROUP BY 1, 2, 3
+HAVING COUNT(DISTINCT p3) = 3
+ORDER BY rn
+LIMIT 1
