@@ -1,13 +1,4 @@
-WITH RECURSIVE steps AS (
-SELECT
-  id
-, (arr[2])::INT crates
-, (arr[4])::INT from_
-, (arr[6])::INT to_
-FROM day05_moves
-, regexp_split_to_array(description, '\s+') arr
-)
-, rec AS (
+WITH RECURSIVE rec AS (
   SELECT
       0 id
     , 0 crates
@@ -22,16 +13,6 @@ FROM day05_moves
     , c7
     , c8
     , c9
-    , ARRAY[0] path_
-    , cardinality(c1)
-      + cardinality(c2)
-      + cardinality(c3)
-      + cardinality(c4)
-      + cardinality(c5)
-      + cardinality(c6)
-      + cardinality(c7)
-      + cardinality(c8)
-      + cardinality(c9) total_crates
   FROM day05_position
 
   UNION ALL
@@ -149,34 +130,12 @@ FROM day05_moves
       WHEN steps.from_ = 9 then c9[1:cardinality(c9)-steps.crates]
       ELSE c9
     END
-  , path_ || steps.id
-  , cardinality(c1)
-    + cardinality(c2)
-    + cardinality(c3)
-    + cardinality(c4)
-    + cardinality(c5)
-    + cardinality(c6)
-    + cardinality(c7)
-    + cardinality(c8)
-    + cardinality(c9) total_crates
   FROM rec
-  JOIN steps ON steps.id = rec.id + 1
+  JOIN day05_steps02 steps
+    ON steps.id = rec.id + 1
 )
 SELECT
-    id
-  , crates
-  , from_
-  , to_
-  , c1
-  , c2
-  , c3
-  , c4
-  , c5
-  , c6
-  , c7
-  , c8
-  , c9
-  , c1[cardinality(c1)]
+    c1[cardinality(c1)]
     || c2[cardinality(c2)]
     || c3[cardinality(c3)]
     || c4[cardinality(c4)]
@@ -184,7 +143,6 @@ SELECT
     || c6[cardinality(c6)]
     || c7[cardinality(c7)]
     || c8[cardinality(c8)]
-    || c9[cardinality(c9)]
-  , total_crates
+    || c9[cardinality(c9)] stack_tops
 FROM rec
 WHERE id = (SELECT max(id) FROM rec)
